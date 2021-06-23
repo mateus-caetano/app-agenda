@@ -14,9 +14,9 @@ App agenda será um aplicativo de agenda em que o usuário poderá manipular as 
  O usuário poderá se cadastrar inserindo o nome, email e telefone.
 3. Tela inicial \
  Será apresentado a lista de eventos ativos.
-4. Evento detalhado \
+4. Tela de detalhes do evento \
  Ao apertar em algum evento uma tela com os detalhes do evento será aberta, exibindo o horário, a localização(ao apertar na localização o mapo será exibido) e o link(caso o evento seja online).
-5. Criação de evento \
+5. Tela de criação do evento \
  O usuário poderá criar um evento inserindo o nome do evento, horário, localização(automática ou manual) e caso o evento seja online será necessário o link do evento.
  
  ## Integrantes
