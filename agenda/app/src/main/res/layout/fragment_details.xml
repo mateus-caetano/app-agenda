@@ -89,6 +89,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintStart_toEndOf="parent"
         android:layout_margin="16dp"
+        android:onClick="navigateToMap"
         >
 
         <ImageView

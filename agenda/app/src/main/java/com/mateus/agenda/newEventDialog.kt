@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
+import model.Task
 
 class NewEventDialog : DialogFragment() {
 
@@ -18,13 +19,12 @@ class NewEventDialog : DialogFragment() {
             // Pass null as the parent view because its going in the dialog layout
             builder.setView(inflater.inflate(R.layout.new_event_dialog, null))
                 // Add action buttons
-                .setPositiveButton("",
-                    DialogInterface.OnClickListener { dialog, id ->
-                        // sign in the user ...
+                .setPositiveButton("Salvar",
+                    DialogInterface.OnClickListener { dialog, id -> // save event
                     })
-                .setNegativeButton("",
+                .setNegativeButton("Cancelar",
                     DialogInterface.OnClickListener { dialog, id ->
-//                        getDialog().cancel()
+                        dialog.cancel()
                     })
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")

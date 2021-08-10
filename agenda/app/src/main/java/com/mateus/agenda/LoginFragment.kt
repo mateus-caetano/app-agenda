@@ -44,6 +44,7 @@ class LoginFragment : Fragment() {
         loginWithPhoneButton.setOnClickListener {
             val navop: NavOptions = NavOptions.Builder().setPopUpTo(R.id.fragmentList, true).build()
             it.findNavController().navigate(R.id.action_loginFragment_to_listFragment, savedInstanceState, navop)
+            it.findNavController().popBackStack(R.id.fragmentList, true)
         }
         loginWithGoogleButton.setOnClickListener {
             val navop: NavOptions = NavOptions.Builder().setPopUpTo(R.id.fragmentList, true).build()
