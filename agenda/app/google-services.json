@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "933674507422",
+    "firebase_url": "https://agenda-3be34-default-rtdb.firebaseio.com",
+    "project_id": "agenda-3be34",
+    "storage_bucket": "agenda-3be34.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:933674507422:android:5976de2d5baddf54f22f8f",
+        "android_client_info": {
+          "package_name": "com.mateus.agenda"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "933674507422-ti210d6qg9f31chh783eelhb37gija3e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-kvoDKdR2gcJAarpNjk4fygXlPKnuLI0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "933674507422-ti210d6qg9f31chh783eelhb37gija3e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

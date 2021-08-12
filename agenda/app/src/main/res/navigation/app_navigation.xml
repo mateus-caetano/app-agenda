@@ -25,9 +25,36 @@
         android:name="com.mateus.agenda.ListFragment"
         android:label="fragment_list"
         tools:layout="@layout/fragment_list" >
+        <argument
+            android:name="id_list"
+            android:defaultValue=""
+            app:argType="string"/>
+        <argument
+            android:name="details"
+            android:defaultValue=""
+            app:argType="string"/>
+        <argument
+            android:name="title"
+            android:defaultValue=""
+            app:argType="string"/>
+        <argument
+            android:name="dateTime"
+            android:defaultValue=""
+            app:argType="string"/>
+        <argument
+            android:name="location"
+            android:defaultValue=""
+            app:argType="string"/>
+        <argument
+            android:name="link"
+            android:defaultValue=""
+            app:argType="string"/>
         <action
             android:id="@+id/action_listFragment_to_detailsFragment"
             app:destination="@id/detailsFragment" />
+        <action
+            android:id="@+id/action_listFragment_to_newEventDialog"
+            app:destination="@id/newEventDialog" />
     </fragment>
     <fragment
         android:id="@+id/detailsFragment"
@@ -40,6 +67,30 @@
         <action
             android:id="@+id/action_detailsFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
+        <argument
+            android:name="id"
+            android:defaultValue=""
+            app:argType="string"/>
+        <argument
+            android:name="details"
+            android:defaultValue=""
+            app:argType="string"/>
+        <argument
+            android:name="title"
+            android:defaultValue=""
+            app:argType="string"/>
+        <argument
+            android:name="dateTime"
+            android:defaultValue=""
+            app:argType="string"/>
+        <argument
+            android:name="location"
+            android:defaultValue=""
+            app:argType="string"/>
+        <argument
+            android:name="link"
+            android:defaultValue=""
+            app:argType="string"/>
     </fragment>
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"
@@ -51,7 +102,38 @@
         map:uiZoomControls="true"
         map:uiRotateGestures="true"
         map:cameraTilt="30" />
-<!--    <fragment-->
+    <dialog
+        android:id="@+id/newEventDialog"
+        android:name="com.mateus.agenda.NewEventDialog"
+        android:label="NewEventDialog" />
+    <action
+        android:id="@+id/action_newEventDialog_to_listFragment"
+        app:destination="@id/listFragment" />
+    <argument
+        android:name="id_list"
+        android:defaultValue=""
+        app:argType="string"/>
+    <argument
+        android:name="details"
+        android:defaultValue=""
+        app:argType="string"/>
+    <argument
+        android:name="title"
+        android:defaultValue=""
+        app:argType="string"/>
+    <argument
+        android:name="dateTime"
+        android:defaultValue=""
+        app:argType="string"/>
+    <argument
+        android:name="location"
+        android:defaultValue=""
+        app:argType="string"/>
+    <argument
+        android:name="link"
+        android:defaultValue="Teste"
+        app:argType="string"/>
+    <!--    <fragment-->
 <!--        android:id="@+id/mapFragment"-->
 <!--        android:name="com.mateus.agenda.MapFragment"-->
 <!--        android:label="fragment_map"-->
