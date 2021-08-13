@@ -7,18 +7,23 @@ import kotlinx.coroutines.launch
 import model.Task
 import java.lang.IllegalArgumentException
 
-class AgendaViewModel(private val agendaitem: itemDatabase ): ViewModel() {
-    private var _allitems = MutableLiveData<List<Task>>()
-    val allitems: LiveData<List<Task>>
+class AgendaViewModel(private val agendaItem: itemDatabase ): ViewModel() {
+
+    private var _allItems = MutableLiveData<List<Task>>()
+
+    val allItems: LiveData<List<Task>>
     get() {
-        agendaitem.getItems { _allitems.value = it }
-        return _allitems
+        agendaItem.getItems { _allItems.value = it }
+        return _allItems
     }
+
     private fun insertItem(item: Task){
-        agendaitem.insert(item)
+        agendaItem.insert(item)
     }
+
     private var _selectItem = MutableLiveData<Task>()
-    private fun getNewItemEntry(itemTitle:String, itemLocation:String, itemDescription:String, itemLink:String):Task{
+
+    private fun getNewItemEntry( itemTitle:String, itemLocation:String, itemDescription:String, itemLink:String):Task{
         return Task(
             title = itemTitle,
         location = itemLocation,
@@ -47,16 +52,16 @@ class AgendaViewModel(private val agendaitem: itemDatabase ): ViewModel() {
     fun isEntryValid(itemTitle:String, itemLocation:String, itemDescription:String, itemLink:String): Boolean{
         return !(itemTitle.isBlank() || itemDescription.isBlank() || itemLink.isBlank() || itemLocation.isBlank())
     }
-    fun retriveItem(id: String): LiveData<Task>{
-        agendaitem.getItem(id){ _selectItem.value = it}
+    fun retrieveItem(id: String): LiveData<Task>{
+        agendaItem.getItem(id){ _selectItem.value = it}
         return _selectItem
     }
     private fun updateItem(item: Task){
-        agendaitem.update(item)
+        agendaItem.update(item)
     }
 
     fun deleteItem(item: Task){
-       agendaitem.delete(item)
+       agendaItem.delete(item)
     }
 }
 class AgendaModelFactory(private val item:itemDatabase): ViewModelProvider.Factory{
