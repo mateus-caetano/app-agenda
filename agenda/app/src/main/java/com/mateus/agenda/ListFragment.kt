@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import model.Task
@@ -90,9 +91,5 @@ class ListFragment : Fragment() {
                 "https://meet.google.com/")
             )
         }
-    }
-
-    public fun addEvent(event: Task) {
-        dataSet.add(event)
     }
 }

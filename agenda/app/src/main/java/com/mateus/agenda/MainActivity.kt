@@ -5,7 +5,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.findNavController
 
+const val LOGIN_STATE = "LOGIN_STATE"
+
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -23,4 +26,5 @@ class MainActivity : AppCompatActivity() {
         val dialog = NewEventDialog()
         dialog.show(supportFragmentManager, "newEvent")
     }
+
 }

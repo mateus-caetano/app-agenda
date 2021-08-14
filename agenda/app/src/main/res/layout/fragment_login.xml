@@ -45,7 +45,7 @@
             android:id="@+id/login_with_phone_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Entrar comm o número de telefone"
+            android:text="Entrar com o número de telefone"
             android:textColor="@color/white"
             android:backgroundTint="@color/design_default_color_primary_variant"/>
 
