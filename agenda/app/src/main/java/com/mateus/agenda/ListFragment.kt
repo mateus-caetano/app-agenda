@@ -2,18 +2,18 @@ package com.mateus.agenda
 
 import adapters.Adapter
 import android.os.Bundle
-import android.text.format.DateFormat
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.cardview.widget.CardView
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import model.Task
-import java.util.*
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.mateus.agenda.repositories.EventRepository
+import com.mateus.agenda.viewModels.EventVewModel
+import com.mateus.agenda.viewModels.factory.EventsListViewModelFactory
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -30,9 +30,9 @@ class ListFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    private val dataSet: MutableList<Task> = mutableListOf()
+    private val repository = EventRepository.instance()
+    private val viewModel: EventVewModel by activityViewModels<EventVewModel>({ EventsListViewModelFactory(repository) })
     private lateinit var linearLayoutManager: LinearLayoutManager
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,16 +48,27 @@ class ListFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_list, container, false)
+        var adapter: Adapter
 
-        initializeDataSet()
-        val adapter = Adapter(dataSet.toTypedArray())
+        adapter = viewModel.getEventsList().value?.toTypedArray()?.let { Adapter(it) }!!
+        viewModel.getEventsList().observe(viewLifecycleOwner, Observer { eventsList ->
+            adapter = Adapter(eventsList.toTypedArray())
+            linearLayoutManager = LinearLayoutManager(context)
+            val recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)
+            recyclerView.layoutManager = linearLayoutManager
+            recyclerView.adapter = adapter
+        })
 
-        linearLayoutManager = LinearLayoutManager(context)
-        val recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)
-        recyclerView.layoutManager = linearLayoutManager
-        recyclerView.adapter = adapter
+        view.findViewById<FloatingActionButton>(R.id.floatButton).setOnClickListener{
+            eventDialog()
+        }
 
         return view
+    }
+
+    fun eventDialog() {
+        val dialog = NewEventDialog()
+        activity?.supportFragmentManager?.let { dialog.show(it, "newEvent") }
     }
 
     companion object {
@@ -78,18 +89,5 @@ class ListFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
-    }
-
-    fun initializeDataSet() {
-        for (i in 1..20) {
-            dataSet.add(
-                Task(
-                "task title " + i.toString(),
-                "this task is a mock task",
-                    DateFormat.format("dd-MM-yyyy hh:mm a", Date()).toString(),
-                "4.9793584,-39.0585479,17",
-                "https://meet.google.com/")
-            )
-        }
     }
 }

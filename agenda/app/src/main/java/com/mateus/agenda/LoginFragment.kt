@@ -18,7 +18,7 @@ import androidx.navigation.fragment.findNavController
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
-
+const val LOGIN_STATE = "LOGIN_STATE"
 /**
  * A simple [Fragment] subclass.
  * Use the [LoginFragment.newInstance] factory method to
