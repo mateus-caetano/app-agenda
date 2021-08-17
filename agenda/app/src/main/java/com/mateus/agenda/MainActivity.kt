@@ -12,12 +12,4 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
     }
-
-    fun navigateToDetails(view: View) {
-        view.findNavController().navigate(R.id.action_listFragment_to_detailsFragment)
-    }
-
-    fun navigateToMap(view: View) {
-        view.findNavController().navigate(R.id.action_detailsFragment_to_mapsFragment)
-    }
 }

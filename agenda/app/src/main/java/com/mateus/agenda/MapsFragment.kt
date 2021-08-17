@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
+import androidx.navigation.fragment.navArgs
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 
@@ -22,6 +23,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 
 class MapsFragment : Fragment(), GoogleMap.OnMarkerClickListener {
+    private val args by navArgs<MapsFragmentArgs>()
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var lastLocation : Location

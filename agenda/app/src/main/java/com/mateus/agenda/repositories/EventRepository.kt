@@ -20,6 +20,7 @@ class EventRepository {
         for (i in 1..20) {
             taskList.add(0,
                 Task(
+                    UUID.randomUUID().toString(),
                     "task title " + i.toString(),
                     "this task is a mock task",
                     DateFormat.format("dd-MM-yyyy hh:mm a", Date()).toString(),
@@ -44,5 +45,15 @@ class EventRepository {
         dataset.value = taskList
         if (dataset.value == taskList) return true
         else return false
+    }
+
+    fun getEventById(id: String): LiveData<Task> {
+        val event = dataset.value?.first{ it.id == id }
+        return MutableLiveData(event)
+    }
+
+    fun deleteEvent(id: String): Boolean {
+        val event = taskList.first { task -> task.id == id }
+        return taskList.remove(event)
     }
 }
