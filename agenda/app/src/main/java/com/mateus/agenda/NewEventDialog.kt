@@ -9,10 +9,8 @@ import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
 import android.text.format.DateFormat
-import android.widget.DatePicker
-import android.widget.LinearLayout
-import android.widget.TimePicker
-import android.widget.Toast
+import android.view.View
+import android.widget.*
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.textfield.TextInputEditText
@@ -23,13 +21,12 @@ import model.Task
 import java.util.*
 
 class NewEventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
-    private val inflater = requireActivity().layoutInflater;
-    private val dialogLayout = inflater.inflate(R.layout.new_event_dialog, null)
+    private lateinit var globalDialogLayout: View
 
-    private val title: String = dialogLayout?.findViewById<TextInputEditText>(R.id.new_title)?.text.toString()
-    private val description: String = dialogLayout?.findViewById<TextInputEditText>(R.id.new_description)?.text.toString()
-    private var dateTime: String = DateFormat.format("dd-MM-yyyy hh:mm a", Date()).toString()
-    private val link: String = dialogLayout?.findViewById<TextInputEditText>(R.id.new_link)?.text.toString()
+    private lateinit var title: String
+    private lateinit var description: String
+    private var dateTime: String = "Sem data definda"
+    private lateinit var link: String
 
     private val c = Calendar.getInstance()
     private val year = c.get(Calendar.YEAR)
@@ -39,7 +36,14 @@ class NewEventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, Tim
     private val minute = c.get(Calendar.MINUTE)
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        pickDate()
+        val inflater = requireActivity().layoutInflater;
+        val dialogLayout = inflater.inflate(R.layout.new_event_dialog, null)
+        globalDialogLayout = dialogLayout
+
+        val dateTimeButton = dialogLayout.findViewById<LinearLayout>(R.id.linearlayoutDateTime)
+        dateTimeButton.setOnClickListener {
+            DatePickerDialog(requireContext(), this, year, month, day).show()
+        }
         return activity?.let {
             val builder = AlertDialog.Builder(it)
 
@@ -60,7 +64,13 @@ class NewEventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, Tim
     fun saveEvent() {
         val repository = EventRepository.Companion.instance()
         val viewModel: EventVewModel by activityViewModels<EventVewModel>({ EventsListViewModelFactory(repository) })
-        val success = viewModel.saveNewEvent(
+
+        title = globalDialogLayout?.findViewById<TextInputEditText>(R.id.new_title)?.text.toString()
+        description = globalDialogLayout?.findViewById<TextInputEditText>(R.id.new_description)?.text.toString()
+//        dateTime = DateFormat.format("dd-MM-yyyy hh:mm a", Date()).toString()
+        link = globalDialogLayout?.findViewById<TextInputEditText>(R.id.new_link)?.text.toString()
+
+        val result = viewModel.saveNewEvent(
             Task(
                 title,
                 description,
@@ -68,17 +78,10 @@ class NewEventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, Tim
                 Location(LocationManager.NETWORK_PROVIDER),
                 link)
         )
-        if(success) {
+        if(result) {
             Toast.makeText(context, "Evento adicionado com sucesso", Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(context, "O evento não pôde ser adicionado", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    fun pickDate() {
-        val dateTimeButton = dialogLayout.findViewById<LinearLayout>(R.id.linearlayoutDateTime)
-        dateTimeButton.setOnClickListener {
-            DatePickerDialog(requireContext(), this, year, month, day).show()
         }
     }
 
@@ -89,5 +92,6 @@ class NewEventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, Tim
 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
         dateTime = dateTime + " às " + hourOfDay.toString() + "h" + minute.toString() + "m"
+        globalDialogLayout.findViewById<TextView>(R.id.new_date_time).setText(dateTime)
     }
 }
