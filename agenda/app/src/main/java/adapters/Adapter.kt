@@ -19,6 +19,7 @@ import com.mateus.agenda.databinding.FragmentListBinding
     RecyclerView.Adapter<Adapter.ViewHolder>() {*/
 class Adapter(private val onItemClick: (Task) -> Unit): ListAdapter<Task, Adapter.ItemViewHolder>(
     DiffCallback){
+
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return ItemViewHolder(
@@ -28,9 +29,12 @@ class Adapter(private val onItemClick: (Task) -> Unit): ListAdapter<Task, Adapte
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ItemViewHolder, position: Int) {
        val current = getItem(position)
-        viewHolder.itemView.setOnClickListener { onItemClick(current) }
+        viewHolder.itemView.setOnClickListener {
+            onItemClick(current)
+        }
         viewHolder.bind(current)
     }
+
     class ItemViewHolder(private var binding: FragmentListItemBinding)
         : RecyclerView.ViewHolder(binding.root) {
 
@@ -40,17 +44,16 @@ class Adapter(private val onItemClick: (Task) -> Unit): ListAdapter<Task, Adapte
         }
     }
 
-    companion object{
-        private val DiffCallback = object : DiffUtil.ItemCallback<Task>(){
+    companion object {
+        private val DiffCallback = object : DiffUtil.ItemCallback<Task>() {
+            override fun areItemsTheSame(oldItem: Task, newItem: Task): Boolean {
+                return oldItem === newItem
+            }
+
             override fun areContentsTheSame(oldItem: Task, newItem: Task): Boolean {
                 return oldItem.title == newItem.title
             }
-
-            override fun areItemsTheSame(oldItem: Task, newItem: Task): Boolean {
-                return oldItem == newItem
-            }
         }
-
     }
 
 }

@@ -50,7 +50,7 @@ class AgendaViewModel(private val agendaItem: itemDatabase ): ViewModel() {
     }
 
     fun isEntryValid(itemTitle:String, itemLocation:String, itemDescription:String, itemLink:String): Boolean{
-        return !(itemTitle.isBlank() || itemDescription.isBlank() || itemLink.isBlank() || itemLocation.isBlank())
+        return !(itemTitle.isBlank() || itemDescription.isBlank() || (itemLink.isBlank() && itemLocation.isBlank()))
     }
     fun retrieveItem(id: String): LiveData<Task>{
         agendaItem.getItem(id){ _selectItem.value = it}
@@ -61,7 +61,9 @@ class AgendaViewModel(private val agendaItem: itemDatabase ): ViewModel() {
     }
 
     fun deleteItem(item: Task){
-       agendaItem.delete(item)
+        viewModelScope.launch{
+            agendaItem.delete(item)
+        }
     }
 }
 class AgendaModelFactory(private val item:itemDatabase): ViewModelProvider.Factory{

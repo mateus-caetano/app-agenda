@@ -11,8 +11,6 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
-
 
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -53,5 +51,4 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 .title("Marker")
         )
     }
-
 }

@@ -7,12 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
+import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
+import com.google.firebase.auth.FirebaseAuth
 import com.mateus.agenda.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
@@ -52,4 +57,5 @@ class LoginFragment : Fragment() {
             this.findNavController().navigate(action)
         }
     }
+
 }

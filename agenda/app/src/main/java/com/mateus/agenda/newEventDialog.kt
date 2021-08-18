@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -18,6 +19,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.DiffUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mateus.agenda.databinding.FragmentListBinding
 import model.Task
@@ -49,8 +51,7 @@ class NewEventDialog : DialogFragment() {
             addNewItem()
         }
         binding.btnCancel.setOnClickListener {
-            val action = NewEventDialogDirections.actionNewEventDialogToListFragment()
-            findNavController().navigate(action)
+
         }
     }
 
@@ -67,8 +68,15 @@ class NewEventDialog : DialogFragment() {
                 binding.nelocation.text.toString(),
                 binding.textView3.text.toString(),
                 binding.nelink.text.toString())
+                val action = NewEventDialogDirections.actionNewEventDialogToListFragment()
+                findNavController().navigate(action)
         }
-        val action = NewEventDialogDirections.actionNewEventDialogToListFragment()
-        findNavController().navigate(action)
+        if(!(isEntryValid())) {
+            Toast.makeText(
+                this.context,
+                "Preencha os campos",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 }
