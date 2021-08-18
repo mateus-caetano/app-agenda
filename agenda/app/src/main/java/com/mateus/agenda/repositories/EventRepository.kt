@@ -40,6 +40,11 @@ class EventRepository {
         }
     }
 
+    fun getEventById(id: String): LiveData<Task> {
+        val event = dataset.value?.first{ it.id == id }
+        return MutableLiveData(event)
+    }
+
     fun saveNewEvent(event: Task): Boolean {
         taskList.add(0, event)
         dataset.value = taskList
@@ -47,13 +52,15 @@ class EventRepository {
         else return false
     }
 
-    fun getEventById(id: String): LiveData<Task> {
-        val event = dataset.value?.first{ it.id == id }
-        return MutableLiveData(event)
+    fun editEvent(id: String, event: Task): Boolean {
+        deleteEvent(id)
+        return saveNewEvent(event)
     }
 
     fun deleteEvent(id: String): Boolean {
         val event = taskList.first { task -> task.id == id }
-        return taskList.remove(event)
+        val result = taskList.remove(event)
+        dataset.value = taskList
+        return result
     }
 }

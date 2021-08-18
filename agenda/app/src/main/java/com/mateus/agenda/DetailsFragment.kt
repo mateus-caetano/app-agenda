@@ -1,5 +1,7 @@
 package com.mateus.agenda
 
+import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,12 +11,15 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.appbar.MaterialToolbar
 import com.mateus.agenda.repositories.EventRepository
 import com.mateus.agenda.viewModels.EventVewModel
 import com.mateus.agenda.viewModels.factory.EventsListViewModelFactory
+import model.Task
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -50,52 +55,67 @@ class DetailsFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_details, container, false)
 
-        val event: model.Task = viewModel.getEventById(args.taskId).value as model.Task
+        viewModel.getEventById(args.taskId).observe(viewLifecycleOwner, Observer { task ->
+            val link = view.findViewById<TextView>(R.id.details_link)
 
-        val topAppBar = view.findViewById<MaterialToolbar>(R.id.topAppBar)
+            val title = view.findViewById<TextView>(R.id.details_title)
+            val description = view.findViewById<TextView>(R.id.details_description)
+            val dateTime = view.findViewById<TextView>(R.id.details_date_time)
+            title.setText(task?.title)
+            description.setText(task?.details)
+            dateTime.setText(task?.dateTime)
+            link.setText(task?.link)
 
-        topAppBar.setNavigationOnClickListener {
-            view.findNavController().navigate(R.id.action_detailsFragment_to_listFragment)
-        }
+            val topAppBar = view.findViewById<MaterialToolbar>(R.id.topAppBar)
 
-        topAppBar.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.edit -> {
-
-                    true
-                }
-                R.id.delete -> {
-                    val result = viewModel.deleteEvent(event.id)
-                    if(result) {
-                        Toast.makeText(context, "Evento excluído com sucesso", Toast.LENGTH_LONG).show()
-                        view.findNavController()
-                            .navigate(R.id.action_detailsFragment_to_listFragment)
-                    } else {
-                        Toast.makeText(context, "Falha ao excluir o evento", Toast.LENGTH_LONG).show()
-                    }
-                    result
-                }
-                else -> false
+            topAppBar.setNavigationOnClickListener {
+                view.findNavController().navigate(R.id.action_detailsFragment_to_listFragment)
             }
-        }
 
-        val title = view.findViewById<TextView>(R.id.details_title)
-        val description = view.findViewById<TextView>(R.id.details_description)
-        val dateTime = view.findViewById<TextView>(R.id.details_date_time)
+            topAppBar.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.edit -> {
+                        editEvent(task.id)
+                        true
+                    }
+                    R.id.delete -> {
+                        deleteEvent(view, task)
+                        true
+                    }
+                    else -> false
+                }
+            }
+        })
+
         val location = view.findViewById<LinearLayout>(R.id.linear_layout_location)
-        val link = view.findViewById<TextView>(R.id.details_link)
-
-        title.setText(event.title)
-        description.setText(event.details)
-        dateTime.setText(event.dateTime)
-        link.setText(event.link)
 
         location.setOnClickListener {
-            val action = DetailsFragmentDirections.actionDetailsFragmentToMapsFragment(event.location)
+            val action = DetailsFragmentDirections.actionDetailsFragmentToMapsFragment(Location(
+                LocationManager.NETWORK_PROVIDER))
             view.findNavController().navigate(action)
         }
 
         return view
+    }
+
+    private fun editEvent(id: String) {
+        val action = DetailsFragmentDirections.actionDetailsFragmentToEditEventListDialogFragment(
+            id
+        )
+        findNavController().navigate(action)
+    }
+
+    fun deleteEvent(view: View, event: Task?): Boolean {
+        val result = event?.let { viewModel.deleteEvent(it.id) }
+
+        if(result == true) {
+            Toast.makeText(context, "Evento excluído com sucesso", Toast.LENGTH_LONG).show()
+            view.findNavController()
+                .navigate(R.id.action_detailsFragment_to_listFragment)
+        } else {
+            Toast.makeText(context, "Falha ao excluir o evento", Toast.LENGTH_LONG).show()
+        }
+        return result == true
     }
 
     companion object {

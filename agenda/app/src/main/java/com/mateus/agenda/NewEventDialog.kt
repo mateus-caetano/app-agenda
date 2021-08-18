@@ -21,7 +21,7 @@ import model.Task
 import java.util.*
 
 class NewEventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
-    private lateinit var globalDialogLayout: View
+    private lateinit var dialogLayout: View
 
     private var uuid: String = generateuuid()
     private lateinit var title: String
@@ -39,18 +39,7 @@ class NewEventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, Tim
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val inflater = requireActivity().layoutInflater;
-        val dialogLayout = inflater.inflate(R.layout.new_event_dialog, null)
-        globalDialogLayout = dialogLayout
-
-        val args = arguments
-        if (args != null) {
-            uuid = args["uuid"] as String
-            title = args["title"] as String
-            description = args["description"] as String
-            dateTime = args["dateTime"] as String
-            location = args["location"] as Location
-            link = args["link"] as String
-        }
+        dialogLayout = inflater.inflate(R.layout.new_event_dialog, null)
 
         val dateTimeButton = dialogLayout.findViewById<LinearLayout>(R.id.linearlayoutDateTime)
         dateTimeButton.setOnClickListener {
@@ -81,9 +70,9 @@ class NewEventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, Tim
         val repository = EventRepository.Companion.instance()
         val viewModel: EventVewModel by activityViewModels<EventVewModel>({ EventsListViewModelFactory(repository) })
 
-        title = globalDialogLayout?.findViewById<TextInputEditText>(R.id.new_title).text.toString()
-        description = globalDialogLayout?.findViewById<TextInputEditText>(R.id.new_description).text.toString()
-        link = globalDialogLayout?.findViewById<TextInputEditText>(R.id.new_link)?.text.toString()
+        title = dialogLayout?.findViewById<TextInputEditText>(R.id.new_title).text.toString()
+        description = dialogLayout?.findViewById<TextInputEditText>(R.id.new_description).text.toString()
+        link = dialogLayout?.findViewById<TextInputEditText>(R.id.new_link)?.text.toString()
 
         val result = viewModel.saveNewEvent(
             Task(
@@ -101,14 +90,14 @@ class NewEventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, Tim
         }
     }
 
-    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        dateTime = day.toString() + "/" + month.toString() + "/" + year.toString()
-        globalDialogLayout.findViewById<TextView>(R.id.new_date_time).setText(dateTime)
+    override fun onDateSet(view: DatePicker?, newYear: Int, newMonth: Int, newDayOfMonth: Int) {
+        dateTime = (newDayOfMonth).toString() + "/" + (newMonth + 1).toString() + "/" + newYear.toString()
+        dialogLayout.findViewById<TextView>(R.id.new_date_time).setText(dateTime)
         TimePickerDialog(context, this, hour, minute, DateFormat.is24HourFormat(activity)).show()
     }
 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
         dateTime = dateTime + " às " + hourOfDay.toString() + "h" + minute.toString() + "m"
-        globalDialogLayout.findViewById<TextView>(R.id.new_date_time).setText(dateTime)
+        dialogLayout.findViewById<TextView>(R.id.new_date_time).setText(dateTime)
     }
 }

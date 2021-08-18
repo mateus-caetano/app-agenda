@@ -15,13 +15,18 @@ class EventVewModel(private val repository: EventRepository): ViewModel() {
     }
 
     fun getEventById(id: String): LiveData<Task> {
-        return repository.getEventById(id)
+        val event: LiveData<Task> = repository.getEventById(id)
+        return event
     }
 
     fun saveNewEvent(event: Task): Boolean {
         val state: Boolean = repository.saveNewEvent(event)
         getEventsList()
         return state
+    }
+
+    fun editEvent(id: String, event: Task): Boolean {
+        return repository.editEvent(id, event)
     }
 
     fun deleteEvent(id: String): Boolean {
