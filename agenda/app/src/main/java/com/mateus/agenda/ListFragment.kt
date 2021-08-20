@@ -51,7 +51,7 @@ class ListFragment : Fragment() {
         var adapter: Adapter
 
         adapter = viewModel.getEventsList().value?.toTypedArray()?.let { Adapter(it) }!!
-        viewModel.getEventsList().observe(viewLifecycleOwner, { eventsList ->
+        viewModel.getEventsList().observe(viewLifecycleOwner, Observer { eventsList ->
             adapter = Adapter(eventsList.toTypedArray())
             linearLayoutManager = LinearLayoutManager(context)
             val recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)

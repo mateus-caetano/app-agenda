@@ -10,11 +10,13 @@ class EventVewModel(private val repository: EventRepository): ViewModel() {
     private lateinit var dataset: LiveData<List<Task>>
 
     fun getEventsList(): LiveData<List<Task>> {
-        return repository.getEventsList()
+        dataset = repository.getEventsList()
+        return dataset
     }
 
     fun getEventById(id: String): LiveData<Task> {
-        return repository.getEventById(id)
+        val event: LiveData<Task> = repository.getEventById(id)
+        return event
     }
 
     fun saveNewEvent(event: Task): Boolean {
@@ -23,8 +25,11 @@ class EventVewModel(private val repository: EventRepository): ViewModel() {
         return state
     }
 
+    fun editEvent(id: String, event: Task): Boolean {
+        return repository.editEvent(id, event)
+    }
+
     fun deleteEvent(id: String): Boolean {
-        val bool = repository.deleteEvent(id)
-        return bool
+        return repository.deleteEvent(id)
     }
 }
