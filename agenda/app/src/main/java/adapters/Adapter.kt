@@ -1,59 +1,60 @@
 package adapters
 
-import adapters.Adapter.*
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
 import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
+import androidx.cardview.widget.CardView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.mateus.agenda.ListFragmentDirections
 import com.mateus.agenda.R
 import model.Task
-import com.mateus.agenda.databinding.FragmentListItemBinding
-import com.mateus.agenda.databinding.FragmentListBinding
 
 
+class Adapter(private val dataSet: Array<Task>) :
+    RecyclerView.Adapter<Adapter.ViewHolder>() {
 
-/*class Adapter(private val dataSet: Array<Task>) :
-    RecyclerView.Adapter<Adapter.ViewHolder>() {*/
-class Adapter(private val onItemClick: (Task) -> Unit): ListAdapter<Task, Adapter.ItemViewHolder>(
-    DiffCallback){
+    /**
+     * Provide a reference to the type of views that you are using
+     * (custom ViewHolder).
+     */
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val title: TextView
+        val dateTime: TextView
+        val cardView: CardView
+
+        init {
+            // Define click listener for the ViewHolder's View.
+            title = view.findViewById(R.id.title)
+            dateTime = view.findViewById(R.id.date_time)
+            cardView = view.findViewById(R.id.list_item)
+        }
+    }
 
     // Create new views (invoked by the layout manager)
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        return ItemViewHolder(
-            FragmentListItemBinding.inflate(LayoutInflater.from(parent.context))
-        )
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
+        // Create a new view, which defines the UI of the list item
+        val view = LayoutInflater.from(viewGroup.context)
+            .inflate(R.layout.fragment_list_item, viewGroup, false)
+
+        return ViewHolder(view)
     }
+
     // Replace the contents of a view (invoked by the layout manager)
-    override fun onBindViewHolder(viewHolder: ItemViewHolder, position: Int) {
-       val current = getItem(position)
-        viewHolder.itemView.setOnClickListener {
-            onItemClick(current)
-        }
-        viewHolder.bind(current)
-    }
+    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
 
-    class ItemViewHolder(private var binding: FragmentListItemBinding)
-        : RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(item: Task) {
-            binding.title.text = item.title
-            binding.dateTime.text = item.dateTime
+        // Get element from your dataset at this position and replace the
+        // contents of the view with that element
+        viewHolder.title.text = dataSet[position].title
+        viewHolder.dateTime.text = dataSet[position].dateTime
+        viewHolder.cardView.setOnClickListener {
+            val action = ListFragmentDirections.actionListFragmentToDetailsFragment(dataSet[position].id)
+            it.findNavController().navigate(action)
         }
     }
 
-    companion object {
-        private val DiffCallback = object : DiffUtil.ItemCallback<Task>() {
-            override fun areItemsTheSame(oldItem: Task, newItem: Task): Boolean {
-                return oldItem === newItem
-            }
-
-            override fun areContentsTheSame(oldItem: Task, newItem: Task): Boolean {
-                return oldItem.title == newItem.title
-            }
-        }
-    }
+    // Return the size of your dataset (invoked by the layout manager)
+    override fun getItemCount() = dataSet.size
 
 }

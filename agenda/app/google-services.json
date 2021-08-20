@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "933674507422",
-    "firebase_url": "https://agenda-3be34-default-rtdb.firebaseio.com",
-    "project_id": "agenda-3be34",
-    "storage_bucket": "agenda-3be34.appspot.com"
+    "project_number": "382370823889",
+    "firebase_url": "https://agenda-66f70-default-rtdb.firebaseio.com",
+    "project_id": "agenda-66f70",
+    "storage_bucket": "agenda-66f70.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:933674507422:android:5976de2d5baddf54f22f8f",
+        "mobilesdk_app_id": "1:382370823889:android:c1f09de6be4c23944ecff0",
         "android_client_info": {
           "package_name": "com.mateus.agenda"
         }
       },
       "oauth_client": [
         {
-          "client_id": "933674507422-ti210d6qg9f31chh783eelhb37gija3e.apps.googleusercontent.com",
+          "client_id": "382370823889-bpgs5efhci640tshb2p1drsq11m4gdqf.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC-kvoDKdR2gcJAarpNjk4fygXlPKnuLI0"
+          "current_key": "AIzaSyDGevIHM32nGcKkU-nvrHwzd8hvKI6D6bs"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "933674507422-ti210d6qg9f31chh783eelhb37gija3e.apps.googleusercontent.com",
+              "client_id": "382370823889-bpgs5efhci640tshb2p1drsq11m4gdqf.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

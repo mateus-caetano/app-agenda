@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -23,6 +21,7 @@
             android:layout_height="?attr/actionBarSize"
             app:title="Detalhes"
             app:titleTextColor="@color/white"
+            app:menu="@menu/top_app_bar"
             app:navigationIcon="@drawable/abc_vector_test"
             android:background="?attr/colorPrimaryVariant"
             />
@@ -30,12 +29,12 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/details_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/tool_bar"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="Title"
+        android:text=""
         android:textSize="18dp"
         android:textStyle="bold"
         android:layout_margin="16dp" />
@@ -45,7 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/textView"
+        app:layout_constraintTop_toBottomOf="@id/details_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintStart_toEndOf="parent"
         android:layout_margin="16dp"
@@ -61,20 +60,20 @@
             />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/details_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="This is a description sample"
+            android:text=""
             android:textSize="16dp"
             android:layout_marginStart="8dp"
             android:layout_gravity="center_vertical"/>
     </LinearLayout>
 
     <TextView
-        android:id="@+id/date_time"
+        android:id="@+id/details_date_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="07-08-2021 06:43"
+        android:text="Data e hora não definidos"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linear_layout"
         android:layout_marginStart="16dp"
@@ -83,15 +82,14 @@
         />
 
     <LinearLayout
-        android:id="@+id/linear_layout2"
+        android:id="@+id/linear_layout_location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/date_time"
+        app:layout_constraintTop_toBottomOf="@id/details_date_time"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintStart_toEndOf="parent"
         android:layout_margin="16dp"
-        android:onClick="navigateToMap"
         >
 
         <ImageView
@@ -103,13 +101,12 @@
             />
 
         <TextView
-            android:id="@+id/dlocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="8dp"
             android:text="Clique para ver a localização no mapa"
-            android:textSize="16dp" />
+            android:textSize="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_gravity="center_vertical"/>
     </LinearLayout>
 
     <LinearLayout
@@ -117,7 +114,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/linear_layout2"
+        app:layout_constraintTop_toBottomOf="@id/linear_layout_location"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintStart_toEndOf="parent"
         android:layout_margin="16dp"
@@ -132,14 +129,13 @@
             />
 
         <TextView
-            android:id="@+id/dlink"
+            android:id="@+id/details_link"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:text="Link não definido"
+            android:textSize="16dp"
             android:layout_marginStart="8dp"
-            android:text="Link da video chamada"
-            android:textSize="16dp" />
+            android:layout_gravity="center_vertical"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
