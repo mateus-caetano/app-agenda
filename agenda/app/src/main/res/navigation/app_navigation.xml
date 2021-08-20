@@ -42,6 +42,9 @@
             app:popExitAnim="@android:anim/fade_out"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_loginFragment_to_loginEmail"
+            app:destination="@id/loginEmail" />
     </fragment>
     <fragment
         android:id="@+id/listFragment"
@@ -112,5 +115,26 @@
             android:id="@+id/action_editEventListDialogFragment_to_listFragment"
             app:destination="@id/listFragment" />
     </dialog>
+    <fragment
+        android:id="@+id/loginEmail"
+        android:name="com.mateus.agenda.LoginEmail"
+        android:label="login_email"
+        tools:layout="@layout/login_email" >
+        <action
+            android:id="@+id/action_loginEmail_to_listFragment"
+            app:destination="@id/listFragment" />
+        <action
+            android:id="@+id/action_loginEmail_to_createUser"
+            app:destination="@id/createUser" />
+    </fragment>
+    <fragment
+        android:id="@+id/createUser"
+        android:name="com.mateus.agenda.CreateUser"
+        android:label="create_user"
+        tools:layout="@layout/create_user" >
+        <action
+            android:id="@+id/action_createUser_to_loginEmail"
+            app:destination="@id/loginEmail" />
+    </fragment>
 
 </navigation>

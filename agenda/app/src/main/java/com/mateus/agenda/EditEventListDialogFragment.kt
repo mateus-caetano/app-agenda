@@ -1,14 +1,16 @@
 package com.mateus.agenda
 
+import android.app.DatePickerDialog
+import android.app.Dialog
+import android.app.TimePickerDialog
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
+import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -19,9 +21,11 @@ import com.mateus.agenda.repositories.EventRepository
 import com.mateus.agenda.viewModels.EventVewModel
 import com.mateus.agenda.viewModels.factory.EventsListViewModelFactory
 import model.Task
+import java.util.*
 
-class EditEventListDialogFragment : BottomSheetDialogFragment() {
+class EditEventListDialogFragment : BottomSheetDialogFragment(){
     val args by navArgs<EditEventListDialogFragmentArgs>()
+
     val repository = EventRepository.instance()
     val viewModel: EventVewModel by activityViewModels<EventVewModel>({ EventsListViewModelFactory(repository) })
 
@@ -39,6 +43,7 @@ class EditEventListDialogFragment : BottomSheetDialogFragment() {
             view.findViewById<TextInputEditText>(R.id.new_link).setText(event?.link)
 
             setButtons(view, event.id)
+
         })
 
         return view
@@ -71,6 +76,7 @@ class EditEventListDialogFragment : BottomSheetDialogFragment() {
     }
 
     fun editEvent(view: View?, id: String) {
+
         val event = newTask(view, id)
         val result: Boolean? = event?.let { it -> viewModel.editEvent(it.id, event) }
         if(result == true) {

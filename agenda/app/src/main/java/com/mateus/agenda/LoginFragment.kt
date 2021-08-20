@@ -55,7 +55,7 @@ class LoginFragment : Fragment() {
 
         loginWithPhoneButton.setOnClickListener {
             saveLoginState()
-            findNavController().navigate(R.id.action_loginFragment_to_listFragment)
+            findNavController().navigate(R.id.action_loginFragment_to_loginEmail)
         }
         loginWithGoogleButton.setOnClickListener {
             saveLoginState()

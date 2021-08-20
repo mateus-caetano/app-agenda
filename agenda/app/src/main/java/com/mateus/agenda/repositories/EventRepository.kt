@@ -5,6 +5,7 @@ import android.location.LocationManager
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -12,11 +13,16 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.ktx.Firebase
 import model.Task
+import model.User
 
 class EventRepository {
 
     private var dataset: MutableLiveData<List<Task>> = MutableLiveData()
     private var taskList: MutableList<Task> = mutableListOf()
+    val ref= FirebaseAuth.getInstance()
+    private var usuario: User = User()
+
+
 
     private val cloudbase: FirebaseFirestore = Firebase.firestore
 
@@ -24,7 +30,15 @@ class EventRepository {
         fun instance(): EventRepository = EventRepository()
     }
     init {
-        cloudbase.collection("Events")
+        val user = ref.currentUser
+        if(user != null){
+            usuario.uid = user.uid
+            usuario.email = user.email.toString()
+            Log.w("Usuario", "Id Usario: ${usuario.uid}")
+        }else{
+            Log.w("AddEvent", "Usuário não logado")
+        }
+        cloudbase.collection("Usuarios").document(usuario.uid).collection("Events")
             .get()
             .addOnSuccessListener { value ->
                 if (value != null) {
@@ -33,6 +47,8 @@ class EventRepository {
                         var location = Location(LocationManager.NETWORK_PROVIDER)
                         location.latitude = dataobj.location["latitude"] as Double
                         location.longitude = dataobj.location["longitude"] as Double
+                        location.provider = dataobj.location["provider"] as String
+                        location.altitude = dataobj.location["altitude"] as Double
 
                         taskList
                             .add(
@@ -62,17 +78,18 @@ class EventRepository {
             "dateTime" to item.dateTime,
             "location" to item.location,
             "link" to item.link)
-        cloudbase.collection("Events").document(item.id)
+        cloudbase.collection("Usuarios").document(usuario.uid).collection("Events")
+            .document(item.id)
             .set(event)
             .addOnSuccessListener {
                 Log.w("AddEvent", "Added successfully: Id ${item.id}")
-
             }
         taskList.add(0,item)
     }
     fun remove(id: String){
 
-        cloudbase.collection("Events").document(id)
+        cloudbase.collection("Usuarios").document(usuario.uid).collection("Events")
+            .document(id)
             .delete()
             .addOnSuccessListener { Log.w("DelEvent", "DocumentSnapshot successfully deleted!: Id $id") }
             .addOnFailureListener { e -> Log.w("DelEvent", "Error deleting document", e) }
