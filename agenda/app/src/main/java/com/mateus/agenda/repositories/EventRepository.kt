@@ -56,16 +56,13 @@ class EventRepository {
         "dateTime" to item.dateTime,
         "location" to item.location,
         "link" to item.link)
-        cloudbase.collection("Events")
-            .add(event)
+        cloudbase.collection("Events").document(item.id)
+            .set(event)
             .addOnSuccessListener {
-                item.id = it.id
-                taskList.add(0,item)
-            }
+                Log.w(TAG, "Added successfully: Id ${item.id}")
 
-       /* taskList.add(0,item)
-        var id2 = item.id
-        Log.w(TAG, "Added successfully: Id $id2")*/
+            }
+        taskList.add(0,item)
     }
     fun remove(id: String){
 
@@ -80,22 +77,7 @@ class EventRepository {
         dataset.value = taskList
         return dataset
     }
-/*id = document.id
-                        title = document.data.getValue("title").toString()
-                        details = document.data.getValue("details").toString()
-                        dateTime = document.data.getValue("dateTime").toString()
-                        link = document.data.getValue("link").toString()
-                        taskList
-                            .add(
-                                Task(
-                                    id,
-                                    title,
-                                    details,
-                                    dateTime,
-                                    Location(LocationManager.NETWORK_PROVIDER),
-                                    link
-                                )
-                            )*/
+
     fun getEventsList(): MutableLiveData<List<Task>> {
        if(taskList.isEmpty()){
            return initializeDataSet()
@@ -119,6 +101,7 @@ class EventRepository {
 
     fun deleteEvent(id: String): Boolean {
         val event = taskList.first { task -> task.id == id }
+        remove(event.id)
         val result = taskList.remove(event)
         dataset.value = taskList
         return result
