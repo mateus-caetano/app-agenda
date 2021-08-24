@@ -45,17 +45,14 @@
             android:id="@+id/login_with_phone_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Entrar com o número de telefone"
+            android:text="Entrar com o email"
             android:textColor="@color/white"
             android:backgroundTint="@color/design_default_color_primary_variant"/>
 
-        <Button
+        <com.google.android.gms.common.SignInButton
             android:id="@+id/login_with_google_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Entrar com o google"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/design_default_color_primary_variant" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

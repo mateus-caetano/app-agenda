@@ -7,6 +7,7 @@ import android.location.LocationManager
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -106,6 +107,7 @@ class MapsFragment : Fragment() {
                 activity?.let {
                     locationResult.addOnCompleteListener(it) { task ->
                         if (task.isSuccessful) {
+                            Log.v("Mapa","Deu certo!")
                             // Set the map's camera position to the current location of the device.
                             lastKnownLocation = task.result
                             if (lastKnownLocation != null) {
@@ -114,6 +116,7 @@ class MapsFragment : Fragment() {
                                         lastKnownLocation!!.longitude), map.maxZoomLevel))
                             }
                         } else {
+                            Log.v("Mapa","Deu errado!")
             //                        Log.d(TAG, "Current location is null. Using defaults.")
             //                        Log.e(TAG, "Exception: %s", task.exception)
                             map?.moveCamera(CameraUpdateFactory

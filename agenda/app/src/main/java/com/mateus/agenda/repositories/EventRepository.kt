@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -34,7 +35,7 @@ class EventRepository {
         if(user != null){
             usuario.uid = user.uid
             usuario.email = user.email.toString()
-            Log.w("Usuario", "Id Usario: ${usuario.uid}")
+            Log.w("Usuario", "Id Usario: ${usuario.email}")
         }else{
             Log.w("AddEvent", "Usuário não logado")
         }
@@ -43,6 +44,7 @@ class EventRepository {
             .addOnSuccessListener { value ->
                 if (value != null) {
                     for (dc in value) {
+                        Log.w("Usuario", "Title: Teste")
                         var dataobj = dc.toObject<Teste>()
                         var location = Location(LocationManager.NETWORK_PROVIDER)
                         location.latitude = dataobj.location["latitude"] as Double
@@ -57,17 +59,22 @@ class EventRepository {
                                     dc.data.getValue("title").toString(),
                                     dc.data.getValue("details").toString(),
                                     dc.data.getValue("dateTime").toString(),
-                                    location,
+                                    Location(LocationManager.NETWORK_PROVIDER),
                                     dc.data.getValue("link").toString()
                                 )
                             )
+
                     }
+
                     dataset.value = taskList
+                    Log.w("Usuario", "Dados: ${dataset.value.toString()}")
                 }
 
             }
     }
-
+    fun logout(){
+        Firebase.auth.signOut()
+    }
 
     /*Teste de implementação*/
 
@@ -95,15 +102,8 @@ class EventRepository {
             .addOnFailureListener { e -> Log.w("DelEvent", "Error deleting document", e) }
     }
 
-    private fun initializeDataSet(): MutableLiveData<List<Task>> {
-        dataset.value = taskList
-        return dataset
-    }
-
     fun getEventsList(): MutableLiveData<List<Task>> {
-        if(taskList.isEmpty()){
-            return initializeDataSet()
-        }
+        dataset.value = taskList
         return dataset
     }
 

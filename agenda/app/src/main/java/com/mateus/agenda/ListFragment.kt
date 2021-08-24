@@ -1,19 +1,29 @@
 package com.mateus.agenda
 
 import adapters.Adapter
+import android.app.Activity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.FirebaseAuth
 import com.mateus.agenda.repositories.EventRepository
 import com.mateus.agenda.viewModels.EventVewModel
 import com.mateus.agenda.viewModels.factory.EventsListViewModelFactory
+import androidx.fragment.app.FragmentManager as FragmentManager
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -49,8 +59,17 @@ class ListFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_list, container, false)
         var adapter: Adapter
-
-        adapter = viewModel.getEventsList().value?.toTypedArray()?.let { Adapter(it) }!!
+        val topAppBar = view.findViewById<MaterialToolbar>(R.id.topAppBar)
+        topAppBar.setOnMenuItemClickListener { item: MenuItem? ->
+            when (item!!.itemId) {
+                R.id.logout -> {
+                    repository.logout()
+                    view.findNavController().navigate(R.id.action_listFragment_to_loginFragment)
+                }
+            }
+            true
+        }
+            adapter = viewModel.getEventsList().value?.toTypedArray()?.let { Adapter(it) }!!
         viewModel.getEventsList().observe(viewLifecycleOwner, Observer { eventsList ->
             adapter = Adapter(eventsList.toTypedArray())
             linearLayoutManager = LinearLayoutManager(context)
@@ -58,14 +77,14 @@ class ListFragment : Fragment() {
             recyclerView.layoutManager = linearLayoutManager
             recyclerView.adapter = adapter
         })
-
         view.findViewById<FloatingActionButton>(R.id.floatButton).setOnClickListener{
             eventDialog()
         }
-
         return view
     }
-
+    fun retornar(view: View){
+        view.findNavController().navigate(R.id.action_listFragment_to_loginFragment)
+    }
     fun eventDialog() {
         val dialog = NewEventDialog()
         activity?.supportFragmentManager?.let { dialog.show(it, "newEvent") }

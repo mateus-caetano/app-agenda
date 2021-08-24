@@ -1,7 +1,6 @@
 package com.mateus.agenda
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +29,7 @@ class CreateUser: Fragment() {
         val registerBtn=view.findViewById<Button>(R.id.register_button)
 
         registerBtn.setOnClickListener {
+            if(!(email.text.toString().isBlank() || password.text.toString().isBlank())) {
                 ref.createUserWithEmailAndPassword(
                     email.text.toString().trim(),
                     password.text.toString().trim()
@@ -48,8 +48,13 @@ class CreateUser: Fragment() {
                     }
 
                 }
+            }else {
+                Toast.makeText(
+                    context, "Criação falhou.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                }
             }
         return view
     }
-
 }

@@ -13,11 +13,12 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginEmail: Fragment() {
-    val ref= FirebaseAuth.getInstance()
+
+    private lateinit var ref: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        ref= FirebaseAuth.getInstance()
     }
 
     override fun onCreateView(
@@ -32,23 +33,29 @@ class LoginEmail: Fragment() {
         val register = view.findViewById<TextView>(R.id.navigate_to_register)
 
         registerBtn.setOnClickListener {
-            ref.signInWithEmailAndPassword(
-                email.text.toString().trim(),
-                password.text.toString().trim()
-            ).addOnCompleteListener { task ->
-                if(task.isSuccessful){
-                    findNavController().navigate(R.id.action_loginEmail_to_listFragment)
-                }else{
-                    Toast.makeText(context, "Authentication failed.",
-                        Toast.LENGTH_SHORT).show()
-                }
-
+            if(!(email.text.toString().isBlank() || password.text.toString().isBlank())){
+                signIn(email,password)
+            }else{
+                Toast.makeText(context,"Autenticação falhou", Toast.LENGTH_SHORT).show()
             }
         }
         register.setOnClickListener{
             findNavController().navigate(R.id.action_loginEmail_to_createUser)
         }
         return view
+    }
+    fun signIn(email:TextView,  password:TextView){
+        ref.signInWithEmailAndPassword(
+            email.text.toString().trim(),
+            password.text.toString().trim()
+        ).addOnCompleteListener { task ->
+            if(task.isSuccessful){
+                findNavController().navigate(R.id.action_loginEmail_to_listFragment)
+            }else{
+                Toast.makeText(context, "Autenticação falhou",
+                    Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
 }
